@@ -13,9 +13,15 @@ app.set('view engine', 'ejs');
 
 const password = process.env.MONGODB_PASSWORD 
 // process is a global object in Node.js that provides information and control over the current Node.js process 
-mongoose.connect(`mongodb+srv://Nadi78:${password}@cluster0.jkndiqj.mongodb.net/mytodolistDB`,{
-    useNewUrlParser:true,
+mongoose.connect(`mongodb+srv://Nadi78:${password}@cluster0.jkndiqj.mongodb.net/mytodolistDB?retryWrites=true&w=majority`,{
+    useNewUrlParser: true,
+   
     useUnifiedTopology: true
+});
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+  console.log("Connected successfully");
 });
 // make a item schema
 const itemSchema = new mongoose.Schema({
