@@ -1,0 +1,26 @@
+
+
+  <%- include('partials/header.ejs') %>
+  
+  <h1 id="title"><%= listTitle %></h1> 
+  
+  <form action="/" method="POST" id="form" >
+    <input name="newItem" type="text" placeholder="New Item" autocomplete="off" required autofocus>
+    <button type="submit" name="list" value="<%= listTitle %>">Add+</button>
+ </form>
+  <div class="main_container">
+    
+    <% for(let i = 0;i<newListItems.length;i++) { %>
+     <form action="/delete" method="POST">
+      <div id="chb" class="ch">
+     <input type="checkbox"  id="myCheckbox<%= i %>" name="checkbox" value="<%= newListItems[i]._id %>" onChange="this.form.submit()">
+      <p class="child"><%=newListItems[i].name %></p>
+      </div>
+     <input type="hidden" name="listName" value="<%= listTitle %>"></input>
+    </form>
+    <% } %>
+   
+    
+   </div>
+   <%- include('partials/footer.ejs') %>
+ 

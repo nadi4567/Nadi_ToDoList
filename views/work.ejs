@@ -1,0 +1,30 @@
+
+
+
+   
+
+  <%- include('partials/header.ejs') %>
+  
+  <h1 id="title"><%= today %></h1>
+  <form action="/work" method="POST" id="form">
+    <input name="newItem2" type="text" placeholder="New Item" autocomplete="off" required autofocus>
+    <button type="submit">Add+</button>
+ </form>
+  <div class="main_container">
+    
+    <% for(let i = 0;i<newListItems2.length;i++) { %>
+      <ol id="chb" >
+     <input type="checkbox" id="myCheckbox<%= i %>" >
+      <li class="child"><%=(i+1) + ". " +newListItems2[i]  %></li>
+     </ol>
+
+     <% } %>
+
+
+    </div>
+   <%- include('partials/footer.ejs') %>
+  
+ 
+
+  
+ 
