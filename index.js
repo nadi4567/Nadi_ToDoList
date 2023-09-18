@@ -52,35 +52,30 @@ const List = mongoose.model("List",listSchema);
 let options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 let day = new Date().toLocaleDateString(undefined,options)
 //routing home page
-app.get("/",(req,res)=>{
-   // let's check our items
-   
-   Item.find({}).then((foundItems)=>{
-    // let's check if our database is empty or not
-    if(foundItems.length === 0){
-        console.log(foundItems.length)
-        // let's insert our default items into database if our database is empty
-         Item.insertMany(defaultItems).then(()=>{
-            console.log("Inserted default items into database");
-            res.redirect("/")
-        }).catch((err)=>{
-            console.log("Can't insert data into data collections",err.message)
+app.get("/", async (req, res) => {
+    try {
+      // Let's check our items
+      const foundItems = await Item.find({});
+      
+      // Let's check if our database is empty or not
+      if (foundItems.length === 0) {
+        console.log(foundItems.length);
+        // Let's insert our default items into the database if our database is empty
+        await Item.insertMany(defaultItems);
+        console.log("Inserted default items into the database");
+        res.redirect("/");
+      } else {
+        res.render("index.ejs", {
+          listTitle: day,
+          newListItems: foundItems
         });
-         
-        
-    }else{
-        res.render("index.ejs",{listTitle : day,
-            newListItems : foundItems
-        });
-        console.log(`Existing Items are ${foundItems}`)
+        console.log(`Existing Items are ${foundItems}`);
+      }
+    } catch (err) {
+      console.log(err.message);
     }
-     
-     }).catch(err=>{
-     console.log(err.message)
-   })
-    
-    
-});
+  });
+  
 // create dynamic route when user want to create list
 app.get("/:customListName",(req,res)=>{
      const customListName = _.capitalize(req.params.customListName);
